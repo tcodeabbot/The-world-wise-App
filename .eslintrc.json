@@ -1,0 +1,18 @@
+// {
+//   "extends": "react-app",
+
+//   "rules": {
+//     "no-unused-vars": "warn"
+//   }
+// }
+{
+  "extends": "react-app",
+  "rules": {
+    
+    "no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+    ]
+    // Add other rules as needed
+  }
+}
