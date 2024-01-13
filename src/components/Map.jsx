@@ -1,11 +1,10 @@
 import styles from "./Map.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import { useEffect, useState } from "react";
 import { useCities } from "../contexts/CitiesContext";
 // PRAGAMTIC nagigation is the movement into another page without living a page.
 const Map = () => {
-  const navigate = useNavigate();
   const { cities } = useCities();
   const [mapPosition, setMapPosition] = useState([40, 0]);
   {
@@ -22,9 +21,7 @@ const Map = () => {
     //remember to remove the onclik handler .fr/hot
     <div
       className={styles.mapContainer}
-      onClick={() => {
-        navigate("form");
-      }}
+     
     >
       <MapContainer
         center={mapPosition}
@@ -51,6 +48,7 @@ const Map = () => {
           </Marker>
         ))}
         <ChangeCenter position={mapPosition} />
+        <DetectClick />
       </MapContainer>
     </div>
   );
@@ -59,5 +57,16 @@ function ChangeCenter({position}) {
   const map = useMap()
   map.setView(position)
   return null;
+}
+
+function DetectClick() {
+  const navigate = useNavigate();
+
+  useMapEvents({
+    click: (e) => {
+      navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
+      console.log(e);
+    },
+  });
 }
 export default Map;
